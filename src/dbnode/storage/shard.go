@@ -1866,10 +1866,6 @@ func (s *dbShard) Bootstrap(
 		}
 		info := result.Info
 		at := xtime.FromNanoseconds(info.BlockStart)
-		fs := s.FlushState(at)
-		if fs.WarmStatus != fileOpNotStarted {
-			continue // Already recorded progress
-		}
 
 		s.markWarmFlushStateSuccess(at)
 		// Cold version needs to get bootstrapped so that the 1:1 relationship between volume number
