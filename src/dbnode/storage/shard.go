@@ -1872,9 +1872,13 @@ func (s *dbShard) Bootstrap(
 			s.markWarmFlushStateSuccess(at)
 		}
 
-		// Cold version needs to get bootstrapped so that the 1:1 relationship between volume number
-		// and cold version is maintained and the volume numbers / flush versions remain monotonically
-		// increasing.
+		// Cold version needs to get bootstrapped so that the 1:1 relationship
+		// between volume number and cold version is maintained and the volume
+		// numbers / flush versions remain monotonically increasing.
+		//
+		// Note that there can be multiple info files for the same block, for
+		// example if the database didn't get to clean up compacted filesets
+		// before terminating.
 		if fs.ColdVersion < info.VolumeIndex {
 			s.setFlushStateColdVersion(at, info.VolumeIndex)
 		}
