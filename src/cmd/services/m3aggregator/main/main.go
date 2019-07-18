@@ -54,14 +54,19 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Set globals for etcd related packages.
-	etcd.SetGlobals()
-
 	var cfg config.Configuration
 	if err := xconfig.LoadFile(&cfg, *configFile, xconfig.Options{}); err != nil {
 		fmt.Printf("error loading config file: %v\n", err)
 		os.Exit(1)
 	}
+
+	Init(cfg)
+}
+
+func Init(cfg config.Configuration) {
+
+	// Set globals for etcd related packages.
+	etcd.SetGlobals()
 
 	// Create logger and metrics scope.
 	logger, err := cfg.Logging.BuildLogger()
